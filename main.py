@@ -1,7 +1,7 @@
 import tkinter as tk
 
 class Application(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, account=None):
         super().__init__(master, width=400, height=400)
         self.pack(fill="both", expand=True)
         master.geometry('400x400')

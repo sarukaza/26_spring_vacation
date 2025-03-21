@@ -1,4 +1,5 @@
 import tkinter as tk
+import library_db
 import pygame
 from tkinter import messagebox
 from main import Application
@@ -54,7 +55,7 @@ class Register_page(tk.Frame):
                 messagebox.showerror('エラー', 'パスワードは6文字以上である必要があります')
                 return
             try:
-                shopping_db.insert_user(name, pw)   
+                library_db.insert_user(name, pw)   
                 messagebox.showinfo('登録完了', '登録が完了しました')
             except ValueError as e:
                 messagebox.showerror('エラー', str(e))
