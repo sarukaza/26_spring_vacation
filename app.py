@@ -37,7 +37,7 @@ class main_page(tk.Frame):
 
         self.treeview = ttk.Treeview(self, show='headings', height=10)
         self.treeview.pack()
-        header = ('ID', 'title', 'author', 'genre', 'publication_year')
+        header = ('ID', 'title', 'author', 'genre', 'publication_year', 'quantity')
         self.treeview.configure(columns=header)
 
         self.treeview.heading('ID', text='ID')
@@ -45,12 +45,14 @@ class main_page(tk.Frame):
         self.treeview.heading('author', text='著者')
         self.treeview.heading('genre', text='ジャンル')
         self.treeview.heading('publication_year', text='出版年')
+        self.treeview.heading('quantity', text='数量')
 
         self.treeview.column('ID', width=30, anchor=tk.CENTER)
         self.treeview.column('title', width=300, anchor=tk.CENTER)
         self.treeview.column('author', width=200, anchor=tk.CENTER)
         self.treeview.column('genre', width=150, anchor=tk.CENTER)
         self.treeview.column('publication_year', width=100, anchor=tk.CENTER)
+        self.treeview.column('quantity', width=100, anchor=tk.CENTER)
 
         rows = library_db.insert_treeview()
 
@@ -90,8 +92,8 @@ class main_page(tk.Frame):
             if quantity is None:
                 continue
 
-            shopping_db.add_to_cart(user_id, product_id, quantity)
-            selected_items_data.append((*item_data[:-1], quantity))
+            library_db.add_to_cart(user_id, product_id, quantity)
+            selected_items_data.append((item_data[0], item_data[1], item_data[2], item_data[3], item_data[4], quantity))
 
         messagebox.showinfo("情報", "カートに商品が追加されました。")
 

@@ -1,9 +1,7 @@
 import tkinter as tk
 import library_db
-import pygame
 from tkinter import messagebox
 from main import Application
-from pygame import mixer
 
 class Register_page(tk.Frame):
     def __init__(self, master):

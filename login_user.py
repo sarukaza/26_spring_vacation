@@ -1,9 +1,6 @@
 import tkinter as tk
-import pygame
 from tkinter import messagebox
 from library_db import login
-from main import Application
-from pygame import mixer
 from app import main_page
 
 class Login_page(tk.Frame):

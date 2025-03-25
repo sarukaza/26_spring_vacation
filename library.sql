@@ -27,6 +27,16 @@ CREATE TABLE borrowed_books (
     FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
+CREATE TABLE cart (
+    cart_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
+);
+
 insert into books (title, author, genre, publication_year) values
 ('容疑者Xの献身', '東野圭吾', '小説', 2005),
 ('よつばと！', 'あずまきよひこ', '漫画',2003),
