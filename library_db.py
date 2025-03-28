@@ -84,3 +84,21 @@ def add_to_cart(user_id, book_id, quantity=1):
     connection.commit()
     cursor.close()
     connection.close()
+
+def register_borrowed_book(user_id, book_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    # 「borrowed_by」と「borrowed_date」を更新
+    cursor.execute("""
+        UPDATE books
+        SET borrowed_by = %s, borrowed_date = CURRENT_DATE
+        WHERE book_id = %s AND borrowed_by IS NULL
+    """, (user_id, book_id))
+
+    if cursor.rowcount == 0:
+        raise ValueError(f"本ID {book_id} はすでに借りられているか存在しません。")
+
+    connection.commit()
+    cursor.close()
+    connection.close()

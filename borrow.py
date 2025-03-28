@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import library_db
 from tkinter import messagebox
 from tkinter import simpledialog
 
@@ -51,11 +52,8 @@ class borrow_page(tk.Frame):
         self.delete_button = tk.Button(button_frame, text="削除する")
         self.delete_button.grid(row=0, column=1, padx=5)
 
-        self.purchase_button = tk.Button(button_frame, text="借りる")
+        self.purchase_button = tk.Button(button_frame, text="借りる", command=self.purchase)
         self.purchase_button.grid(row=0, column=2, padx=5)
-
-        self.history_button = tk.Button(button_frame, text="購入履歴")
-        self.history_button.grid(row=0, column=3, padx=5)
 
         button_frame.columnconfigure(0, weight=1)
         button_frame.columnconfigure(1, weight=1)
@@ -65,6 +63,27 @@ class borrow_page(tk.Frame):
         from app import main_page
         self.destroy()
         main_page(self.master, self.account)
+
+    def purchase(self):
+        selected_items = self.treeview.selection()
+        if selected_items:
+            selected_item_ids = [self.treeview.item(item, option='values')[0] for item in selected_items]
+
+            try:
+                # データベースに選択された本を「借りた」状態として登録
+                for book_id in selected_item_ids:
+                    library_db.register_borrowed_book(self.account[0], book_id)
+
+                messagebox.showinfo("借りる成功", "選択された本を借りました。")
+
+                # 借りた本をTreeviewから削除
+                for item in selected_items:
+                    self.treeview.delete(item)
+
+            except ValueError as e:
+                messagebox.showerror("購入失敗", str(e))
+        else:
+            messagebox.showwarning("選択なし", "借りる本を選択してください。")
 
     # def purchase(self):
     #     selected_items = self.treeview.selection()
