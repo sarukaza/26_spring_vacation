@@ -89,16 +89,41 @@ def register_borrowed_book(user_id, book_id):
     connection = get_connection()
     cursor = connection.cursor()
 
-    # 「borrowed_by」と「borrowed_date」を更新
+    # データを借りた状態として挿入
     cursor.execute("""
-        UPDATE books
-        SET borrowed_by = %s, borrowed_date = CURRENT_DATE
-        WHERE book_id = %s AND borrowed_by IS NULL
+        INSERT INTO borrowed_books (user_id, book_id, borrow_date, returned)
+        VALUES (%s, %s, CURRENT_DATE, FALSE)
     """, (user_id, book_id))
-
-    if cursor.rowcount == 0:
-        raise ValueError(f"本ID {book_id} はすでに借りられているか存在しません。")
 
     connection.commit()
     cursor.close()
     connection.close()
+
+def delete_cart_item(user_id, book_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    sql = "DELETE FROM cart WHERE user_id = %s AND book_id = %s"
+    cursor.execute(sql, (user_id, book_id))
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+    
+def search_products(query):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    sql = """
+        SELECT * FROM books
+        WHERE title LIKE %s OR author LIKE %s OR genre LIKE %s
+    """
+    search_query = f"%{query}%"
+    cursor.execute(sql, (search_query, search_query, search_query))
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return rows

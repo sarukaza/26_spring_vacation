@@ -32,8 +32,8 @@ class main_page(tk.Frame):
         self.search_entry = tk.Entry(self, width=30)
         self.search_entry.pack(pady=10)
 
-        # self.search_button = tk.Button(self, text="検索", command=self.search)
-        # self.search_button.pack(pady=10)
+        self.search_button = tk.Button(self, text="検索", command=self.search)
+        self.search_button.pack(pady=10)
 
         self.treeview = ttk.Treeview(self, show='headings', height=10)
         self.treeview.pack()
@@ -67,14 +67,14 @@ class main_page(tk.Frame):
         self.destroy()
         Login_page(self.master)
 
-    # def search(self):
-    #     query = self.search_entry.get()
-    #     for item in self.treeview.get_children():
-    #         self.treeview.delete(item)  
+    def search(self):
+        query = self.search_entry.get()
+        for item in self.treeview.get_children():
+            self.treeview.delete(item)  
 
-    #     rows = library_db.search_products(query)
-    #     for row in rows:
-    #         self.treeview.insert('', index='end', values=row)
+        rows = library_db.search_products(query)
+        for row in rows:
+            self.treeview.insert('', index='end', values=row)
 
     def cart(self):
         selected_item = self.treeview.selection()
